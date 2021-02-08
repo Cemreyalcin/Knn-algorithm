@@ -1,0 +1,120 @@
+---
+title: "KNN Algoritması"
+author: "Cemre_Yalcin"
+date: "23 01 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+ **Gerekli Kütüphaneler**
+```{r message=FALSE, warning=FALSE}
+library("class")
+library("ggplot2")
+library("png")
+library("grid")
+```
+
+```{r message=FALSE}
+attach(iris)
+```
+
+# Veri Seti 
+
+Veri kümesi, her biri bir tür iris bitkisine atıfta bulunan 50 örneklik 3 sınıf içerir.
+
+Yanıt değişkeni: iris bitkisinin sınıfı.
+
+1. sepal length (çanak yaprak uzunluğu) in cm 
+2. sepal width (çanak yaprak genişliği) in cm 
+3. petal length (taç yaprak uzunluğu) in cm 
+4. petal width (taç yaprak genişliği) in cm 
+5. class:
+-- Iris Setosa
+-- Iris Versicolour
+-- Iris Virginica
+
+```{r pressure, echo=FALSE}
+summary(iris)
+names(iris) <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species")
+```
+
+# Veri Seti Görselleştirmesi
+```{r}
+ggplot(data = iris,aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
+```
+
+# Train-Test Ayrımı
+```{r}
+smp_size <- floor(0.6 * nrow(iris))
+set.seed(123) 
+train_ind <- sample(nrow(iris), size = smp_size, replace = FALSE)
+train <- iris[train_ind, ]
+test <- iris[-train_ind, ]
+```
+
+
+# Optimum k değerini bulmak için train verisindeki gözlem sayısının karekökü hesaplanır.
+```{r}
+sqrt(90)
+```
+ 
+```{r}
+
+iris_pred2 <- knn(train = train[,1:4], test = test[,1:4], cl = train[,5], k=9)
+iris_pred3 <- knn(train = train[,1:4], test = test[,1:4], cl = train[,5], k=15)
+iris_pred4 <- knn(train = train[,1:4], test = test[,1:4], cl = train[,5], k=25)
+```
+ Algoritma kurulurken optimum k değerine yakın olan değerden başlayarak k arttırılmıştır.
+
+
+# Confusion Matrix 
+
+```{r}
+cm2 <- table(test$Species, iris_pred2) 
+cm2 
+
+```
+
+Algoritmada k=9 alındığında, 
+
+```{r}
+cm3 <- table(test$Species, iris_pred3) 
+cm3 
+```
+Algoritmada k=15 alındığında, 
+
+```{r}
+cm4 <- table(test$Species, iris_pred4) 
+cm4 
+```
+Algoritmada k=25 alındığında, 
+
+```{r}
+
+misClassError2 <- mean(iris_pred2 != test$Species) 
+misClassError3 <- mean(iris_pred3 != test$Species) 
+misClassError4 <- mean(iris_pred4 != test$Species) 
+
+```
+
+```{r}
+
+Accuracy2=1-misClassError2
+Accuracy3=1-misClassError3
+Accuracy4=1-misClassError4
+
+cbind(Accuracy2,Accuracy3,Accuracy4)
+
+```
+ * Algoritmada k=9 alındığında, %95 doğruluk elde edilmiştir.
+ 
+ * Algoritmada k=9 alındığında, %93.3 doğruluk elde edilmiştir.
+ 
+ * Algoritmada k=9 alındığında, %91.7 doğruluk elde edilmiştir.
+ 
+ Optimum k değerinden uzaklaştıkça accuracy değerinin düştüğü gözlemlenmiştir.
+
+
