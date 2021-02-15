@@ -1,4 +1,4 @@
-#**Gerekli Kütüphaneler**
+#**Gerekli KÃ¼tÃ¼phaneler**
 
 library("class")
 library("ggplot2")
@@ -9,22 +9,22 @@ attach(iris)
 
 # Veri Seti 
 
-#Veri kümesi, her biri bir tür iris bitkisine atıfta bulunan 50 örneklik 3 sınıf içerir.
-#Yanıt değişkeni: iris bitkisinin sınıfı.
-#1. sepal length (çanak yaprak uzunluğu) in cm 
-#2. sepal width (çanak yaprak genişliği) in cm 
-#3. petal length (taç yaprak uzunluğu) in cm 
-#4. petal width (taç yaprak genişliği) in cm 
+#Veri kÃ¼mesi, her biri bir tÃ¼r iris bitkisine atÄ±fta bulunan 50 Ã¶rneklik 3 sÄ±nÄ±f iÃ§erir.
+#YanÄ±t deÄŸiÅŸkeni: iris bitkisinin sÄ±nÄ±fÄ±.
+#1. sepal length (Ã§anak yaprak uzunluÄŸu) in cm 
+#2. sepal width (Ã§anak yaprak geniÅŸliÄŸi) in cm 
+#3. petal length (taÃ§ yaprak uzunluÄŸu) in cm 
+#4. petal width (taÃ§ yaprak geniÅŸliÄŸi) in cm 
 #5. class: Iris Setosa- Iris Versicolour- Iris Virginica
 
 summary(iris)
 names(iris) <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species")
 
-# Veri Seti Görselleştirmesi
+# Veri Seti GÃ¶rselleÅŸtirmesi
 
 ggplot(data = iris,aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
 
-# Train-Test Ayrımı
+# Train-Test AyrÄ±mÄ±
 
 smp_size <- floor(0.6 * nrow(iris))
 set.seed(123) 
@@ -32,7 +32,7 @@ train_ind <- sample(nrow(iris), size = smp_size, replace = FALSE)
 train <- iris[train_ind, ]
 test <- iris[-train_ind, ]
 
-# Optimum k değerini bulmak için train verisindeki gözlem sayısının karekökü hesaplanır.
+# Optimum k deÄŸerini bulmak iÃ§in train verisindeki gÃ¶zlem sayÄ±sÄ±nÄ±n karekÃ¶kÃ¼ hesaplanÄ±r.
 
 sqrt(90)
 
@@ -40,24 +40,24 @@ iris_pred2 <- knn(train = train[,1:4], test = test[,1:4], cl = train[,5], k=9)
 iris_pred3 <- knn(train = train[,1:4], test = test[,1:4], cl = train[,5], k=15)
 iris_pred4 <- knn(train = train[,1:4], test = test[,1:4], cl = train[,5], k=25)
 
-#Algoritma kurulurken optimum k değerine yakın olan değerden başlayarak k arttırılmıştır.
+#Algoritma kurulurken optimum k deÄŸerine yakÄ±n olan deÄŸerden baÅŸlayarak k arttÄ±rÄ±lmÄ±ÅŸtÄ±r.
 
 # Confusion Matrix 
 
 cm2 <- table(test$Species, iris_pred2) 
 cm2 
 
-#Algoritmada k=9 alındığında, 
+#Algoritmada k=9 alÄ±ndÄ±ÄŸÄ±nda, 
 
 cm3 <- table(test$Species, iris_pred3) 
 cm3 
 
-#Algoritmada k=15 alındığında, 
+#Algoritmada k=15 alÄ±ndÄ±ÄŸÄ±nda, 
 
 cm4 <- table(test$Species, iris_pred4) 
 cm4 
 
-#Algoritmada k=25 alındığında, 
+#Algoritmada k=25 alÄ±ndÄ±ÄŸÄ±nda, 
 
 misClassError2 <- mean(iris_pred2 != test$Species) 
 misClassError3 <- mean(iris_pred3 != test$Species) 
@@ -69,9 +69,9 @@ Accuracy4=1-misClassError4
 
 cbind(Accuracy2,Accuracy3,Accuracy4)
 
-#Algoritmada k=9 alındığında, %95 doğruluk elde edilmiştir.
-#Algoritmada k=9 alındığında, %93.3 doğruluk elde edilmiştir.
-#Algoritmada k=9 alındığında, %91.7 doğruluk elde edilmiştir.
-#Optimum k değerinden uzaklaştıkça accuracy değerinin düştüğü gözlemlenmiştir.
+#Algoritmada k=9 alÄ±ndÄ±ÄŸÄ±nda, %95 doÄŸruluk elde edilmiÅŸtir.
+#Algoritmada k=15 alÄ±ndÄ±ÄŸÄ±nda, %93.3 doÄŸruluk elde edilmiÅŸtir.
+#Algoritmada k=25 alÄ±ndÄ±ÄŸÄ±nda, %91.7 doÄŸruluk elde edilmiÅŸtir.
+#Optimum k deÄŸerinden uzaklaÅŸtÄ±kÃ§a accuracy deÄŸerinin dÃ¼ÅŸtÃ¼ÄŸÃ¼ gÃ¶zlemlenmiÅŸtir.
 
 
